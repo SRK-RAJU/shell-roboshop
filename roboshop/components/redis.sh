@@ -87,12 +87,12 @@ fi
 if [ -f /etc/redis/redis.conf ]; then
   sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/redis/redis.conf
 fi
-Status_Check $?
+STAT $?
 
 echo "Start Redis Service\t\t\t"
 systemctl enable redis &>>$LOG_FILE && systemctl restart redis &>>$LOG_FILE
 systemctl restart redis &>>$LOG_FILE && systemctl enable redis &>>$LOG_FILE
-Status_Check $?
+STAT $?
 
 #echo "Update Redis Listen Address "
 #sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/redis.conf /etc/redis/redis.conf &>>$LOG_FILE
