@@ -308,8 +308,7 @@ NODEJS() {
   APP_USER_SETUP_WITH_APP
 
   echo "Install NodeJS Dependencies"
-  cd /home/roboshop/${COMPONENT}
-  npm install &>>$LOG_FILE
+  cd /home/roboshop/${COMPONENT} &>>$LOG_FILE  && npm install &>>$LOG_FILE
   STAT $?
 
   SYSTEMD_SETUP
