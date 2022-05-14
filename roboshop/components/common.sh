@@ -290,7 +290,8 @@ SYSTEMD_SETUP() {
   STAT $?
 
   echo "Start ${COMPONENT} Service"
-  systemctl daemon-relaod  &>>$LOG_FILE && systemctl enable ${COMPONENT} &>>$LOG_FILE && systemctl restart ${COMPONENT} &>>$LOG_FILE
+  systemctl daemon-reload &>>$LOG_FILE && systemctl restart ${COMPONENT} &>>$LOG_FILE && systemctl enable ${COMPONENT} &>>$LOG_FILE
+ # systemctl daemon-relaod  &>>$LOG_FILE && systemctl enable ${COMPONENT} &>>$LOG_FILE && systemctl restart ${COMPONENT} &>>$LOG_FILE
   STAT $?
 
 }
@@ -308,6 +309,7 @@ NODEJS() {
   APP_USER_SETUP_WITH_APP
 
   echo "Install NodeJS Dependencies"
+
   cd /home/roboshop/${COMPONENT} &>>$LOG_FILE  && npm install &>>$LOG_FILE
   STAT $?
 
