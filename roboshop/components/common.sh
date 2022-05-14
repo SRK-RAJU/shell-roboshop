@@ -413,16 +413,16 @@ CHECK_MONGO_FROM_APP() {
 }
 
 
-CHECK_SHIPPING_FROM_APP()
-{
-  echo "Checking DB  Connections from APP In Shipping "
-    sleep 15
-  ##echo status = $STAT
-    STAT=$(curl -s localhost:8080/health  | jq .shipping)
-    if [ "$STAT" == "true" ]; then
-      STAT 0
-    else
-      STAT 1
-    fi
-
-}
+#CHECK_SHIPPING_FROM_APP()
+#{
+#  echo "Checking DB  Connections from APP In Shipping "
+#    sleep 15
+#  ##echo status = $STAT
+#    STAT=$(curl -s localhost:8080/health  | jq .shipping)
+#    if [ "$STAT" == "true" ]; then
+#      STAT 0
+#    else
+#      STAT 1
+#    fi
+#
+#}
