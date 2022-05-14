@@ -1,10 +1,12 @@
 #!/bin/bash
 
 #source components/common.sh
-#JAVA shipping
+##JAVA shipping
+#source components/common.sh
+#
+#COMPONENT=shipping
+### Function
+#MAVEN
 source components/common.sh
 
-COMPONENT=shipping
-## Function
-MAVEN
-
+JAVA shipping

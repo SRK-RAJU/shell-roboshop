@@ -95,36 +95,71 @@
 #cd /tmp/mysql-main
 #mysql -u root -pRoboShop@1 <shipping.sql &>>${LOG_FILE}
 #STAT_CHECK $? "Load Schema"
+#source components/common.sh
+#
+#Print "Setup YUM Repos"
+#curl -s -o /etc/yum.repos.d/mongodb.repo https://raw.githubusercontent.com/roboshop-devops-project/mongodb/main/mongo.repo &>>$LOG_FILE
+#StatCheck $?
+#
+#Print "Install MongoDB"
+#yum install -y mongodb-org &>>$LOG_FILE
+#StatCheck $?
+#
+#Print "Update MongoDB Listen Address"
+#sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf
+#StatCheck $?
+#
+#Print "Start MongoDB"
+#systemctl enable mongod &>>$LOG_FILE && systemctl restart mongod &>>$LOG_FILE
+#StatCheck $?
+#
+#Print "Download Schema"
+#curl -f -s -L -o /tmp/mongodb.zip "https://github.com/roboshop-devops-project/mongodb/archive/main.zip" &>>$LOG_FILE
+#StatCheck $?
+#
+#Print "Extract Schema"
+#cd /tmp && unzip -o mongodb.zip &>>$LOG_FILE
+#StatCheck $?
+#
+#Print "Load Schema"
+#cd mongodb-main
+#for schema in catalogue users; do
+#  echo "Load $schema Schema"
+#  mongo < ${schema}.js &>>$LOG_FILE
+#  StatCheck $?
+#done
+
+
 source components/common.sh
 
-Print "Setup YUM Repos"
+echo "Download MongoDb repo file"
 curl -s -o /etc/yum.repos.d/mongodb.repo https://raw.githubusercontent.com/roboshop-devops-project/mongodb/main/mongo.repo &>>$LOG_FILE
-StatCheck $?
+STAT $?
 
-Print "Install MongoDB"
+echo "Install MongoDB"
 yum install -y mongodb-org &>>$LOG_FILE
-StatCheck $?
+STAT $?
 
-Print "Update MongoDB Listen Address"
-sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf
-StatCheck $?
+echo "Update MongoDB Config file"
+sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf  &>>$LOG_FILE
+STAT $?
 
-Print "Start MongoDB"
-systemctl enable mongod &>>$LOG_FILE && systemctl restart mongod &>>$LOG_FILE
-StatCheck $?
+echo "Start Database"
+systemctl enable mongod  &>>$LOG_FILE && systemctl start mongod &>>$LOG_FILE
+STAT $?
 
-Print "Download Schema"
-curl -f -s -L -o /tmp/mongodb.zip "https://github.com/roboshop-devops-project/mongodb/archive/main.zip" &>>$LOG_FILE
-StatCheck $?
+echo "Download Schema"
+curl -s -L -o /tmp/mongodb.zip "https://github.com/roboshop-devops-project/mongodb/archive/main.zip"  &>>$LOG_FILE
+STAT $?
 
-Print "Extract Schema"
-cd /tmp && unzip -o mongodb.zip &>>$LOG_FILE
-StatCheck $?
+echo "Extract Schema"
+cd /tmp/
+unzip -o mongodb.zip  &>>$LOG_FILE
+STAT $?
 
-Print "Load Schema"
+echo "Load Schema"
 cd mongodb-main
-for schema in catalogue users; do
-  echo "Load $schema Schema"
-  mongo < ${schema}.js &>>$LOG_FILE
-  StatCheck $?
+for app in catalogue users ; do
+  mongo < ${app}.js &>>$LOG_FILE
 done
+STAT $?
