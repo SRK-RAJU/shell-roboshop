@@ -67,6 +67,8 @@ rabbitmq: git-pull  ## setup RabbitMQ component
 	@sudo bash components/rabbitmq.sh
 redis: git-pull  ## setup Redis component
 	@sudo bash components/redis.sh
+dispatch: git-pull  ## setup dispatch component
+	@sudo bash components/dispatch.sh
 
 
 ## this is making file
