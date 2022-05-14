@@ -1,12 +1,18 @@
 {
-  "Comment": "CREATE/DELETE/UPSERT a record ",
-  "Changes": [{
+  "Comment": "CREATE/DELETE/UPSERT Reflect a New IP address  record ",
+  "Changes": [
+    {
     "Action": "UPSERT",
     "ResourceRecordSet": {
       "Name": "DNSNAME",
       "Type": "A",
       "TTL": 300,
-      "ResourceRecords": [{ "Value": "IPADDRESS"}]
-    }}]
+      "ResourceRecords": [
+        {
+        "Value":"IPADDRESS"
+        }
+      ]
+    }
+    }
+  ]
 }
-
