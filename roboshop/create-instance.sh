@@ -22,7 +22,7 @@ create_ec2() {
 }
 
 AMI_ID=$(aws ec2 describe-images --filters "Name=name,Values=Centos-7-DevOps-Practice" | jq '.Images[].ImageId' | sed -e 's/"//g')
-SGID=$(aws ec2 describe-security-groups --filters Name=group-name,Values=allow-all-from-public | jq  '.SecurityGroups[].GroupId' | sed -e 's/"//g')
+SGID=$(aws ec2 describe-security-groups --filters Name=group-name,Values=SRK | jq  '.SecurityGroups[].GroupId' | sed -e 's/"//g')
 
 if [ "$1" == "all" ]; then
   for component in catalogue cart user shipping payment frontend mongodb mysql rabbitmq redis ; do
