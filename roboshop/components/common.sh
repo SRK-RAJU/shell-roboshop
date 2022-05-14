@@ -372,3 +372,15 @@ GOLANG() {
 
   SYSTEMD_SETUP
 }
+
+CHECK_REDIS_FROM_APP() {
+  Print "Checking DB  Connections from APP In Redis "
+  sleep 15
+ ## echo status = $STAT
+  STAT=$(curl -s localhost:8080/health  | jq .redis)
+  if [ "$STAT" == "true" ]; then
+    Stat 0
+  else
+    Stat 1
+  fi
+}
