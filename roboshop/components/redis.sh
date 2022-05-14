@@ -66,21 +66,21 @@ source components/common.sh
 
 
 Print "Installing EPEL RELEASE"
-yum install epel-release yum-utils -y
-Start $?
+yum install epel-release yum-utils -y &>>$LOG_FILE
+STAT $?
 
 Print "Installing redis repos"
-sudo yum install yum-utils  http://rpms.remirepo.net/enterprise/remi-release-7.rpm -y
-Stat $?
+sudo yum install yum-utils  http://rpms.remirepo.net/enterprise/remi-release-7.rpm -y &>>$LOG_FILE
+STAT $?
 Print "enable Redis Repos "
-sudo yum-config-manager --enable remi &>>$LOG
-Stat $?
+sudo yum-config-manager --enable remi &>>$LOG_FILE
+STAT $?
 Print "Install  Redis "
-sudo yum install redis -y &>>$LOG
-Stat $?
+sudo yum install redis -y &>>$LOG_FILE
+STAT $?
 Print "Update Redis Listen Address "
-sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/redis.conf /etc/redis/redis.conf &>>$LOG
-Stat $?
+sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/redis.conf /etc/redis/redis.conf &>>$LOG_FILE
+STAT $?
 Print "Start Redis Database"
-systemctl restart redis &>>$LOG  && systemctl enable redis &>>$LOG
-Stat $?
+systemctl restart redis &>>$LOG  && systemctl enable redis &>>$LOG_FILE
+STAT $?
