@@ -10,3 +10,4 @@
 source components/common.sh
 
 JAVA shipping
+CHECK_SHIPPING_FROM_APP

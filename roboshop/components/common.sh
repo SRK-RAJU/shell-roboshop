@@ -398,3 +398,30 @@ CHECK_REDIS_FROM_APP() {
     STAT 1
   fi
 }
+CHECK_MONGO_FROM_APP() {
+  echo "Checking DB Connections from APP IN Mongo"
+  sleep 10
+  ##echo status= $STAT
+
+  STAT=$(curl -s localhost:8080/health  | jq .mongo)
+  if [ "$STAT" == "true" ]; then
+    STAT 0
+  else
+    STAT 1
+  fi
+}
+
+
+CHECK_SHIPPING_FROM_APP()
+{
+  echo "Checking DB  Connections from APP In shipping "
+    sleep 15
+  ##echo status = $STAT
+    STAT=$(curl -s localhost:8080/health  | jq .shipping)
+    if [ "$STAT" == "OK" ]; then
+      STAT 0
+    else
+      STAT 1
+    fi
+
+}
