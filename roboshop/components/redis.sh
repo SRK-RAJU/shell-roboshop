@@ -25,42 +25,62 @@
 
 
 source components/common.sh
-
-
-
-echo "Configuring Redis repo"
-curl -L https://raw.githubusercontent.com/roboshop-devops-project/redis/main/redis.repo -o /etc/yum.repos.d/redis.repo &>>$LOG_FILE
-STAT $?
-
-echo "Installing EPEL RELEASE"
-yum install epel-release yum-utils -y &>>$LOG_FILE
-Start $?
-
-echo "Installing redis utils repos"
-sudo yum install yum-utils  http://rpms.remirepo.net/enterprise/remi-release-7.rpm -y  &>>$LOG_FILE
-Stat $?
-
-echo "enable remi Repos "
-sudo yum-config-manager --enable remi &>>$LOG_FILE
-Stat $?
-echo "Install  Redis "
-sudo yum install redis -y &>>$LOG_FILE
-Stat $?
-echo  "Update Redis Listen Address "
-sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/redis.conf /etc/redis/redis.conf &>>$LOG_FILE
-Stat $?
-
-#echo "Update redis configuration"
-#if [ -f /etc/redis.conf  ]; then
-#  sed -i -e "s/127.0.0.1/0.0.0.0/g" /etc/redis.conf &>>$LOG_FILE
-#elif [ -f /etc/redis/redis.conf  ]; then
-#  sed -i -e "s/127.0.0.1/0.0.0.0/g" /etc/redis/redis.conf &>>$LOG_FILE
-#fi
+#
+#
+#
+#echo "Configuring Redis repo"
+#curl -L https://raw.githubusercontent.com/roboshop-devops-project/redis/main/redis.repo -o /etc/yum.repos.d/redis.repo &>>$LOG_FILE
+#STAT $?
+#
+#echo "Installing EPEL RELEASE"
+#yum install epel-release yum-utils -y &>>$LOG_FILE
+#Start $?
+#
+#echo "Installing redis utils repos"
+#sudo yum install yum-utils  http://rpms.remirepo.net/enterprise/remi-release-7.rpm -y  &>>$LOG_FILE
+#Stat $?
+#echo "enable remi Repos "
+#sudo yum-config-manager --enable remi &>>$LOG_FILE
+#Stat $?
+#echo "Install  Redis "
+#sudo yum install redis -y &>>$LOG_FILE
+#Stat $?
+#echo  "Update Redis Listen Address "
+#sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/redis.conf /etc/redis/redis.conf &>>$LOG_FILE
+#Stat $?
+#
+##echo "Update redis configuration"
+##if [ -f /etc/redis.conf  ]; then
+##  sed -i -e "s/127.0.0.1/0.0.0.0/g" /etc/redis.conf &>>$LOG_FILE
+##elif [ -f /etc/redis/redis.conf  ]; then
+##  sed -i -e "s/127.0.0.1/0.0.0.0/g" /etc/redis/redis.conf &>>$LOG_FILE
+##fi
+##STAT $?
+#
+#echo "Start Redis"
+#
+#systemctl restart redis  &>>$LOG_FILE
+#systemctl enable redis  &>>$LOG_FILE
+##systemctl restart redis  &>>$LOG_FILE
 #STAT $?
 
-echo "Start Redis"
 
-systemctl restart redis  &>>$LOG_FILE
-systemctl enable redis  &>>$LOG_FILE
-#systemctl restart redis  &>>$LOG_FILE
-STAT $?
+Print "Installing EPEL RELEASE"
+yum install epel-release yum-utils -y
+Start $?
+
+Print "Installing redis repos"
+sudo yum install yum-utils  http://rpms.remirepo.net/enterprise/remi-release-7.rpm -y
+Stat $?
+Print "enable Redis Repos "
+sudo yum-config-manager --enable remi &>>$LOG
+Stat $?
+Print "Install  Redis "
+sudo yum install redis -y &>>$LOG
+Stat $?
+Print "Update Redis Listen Address "
+sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/redis.conf /etc/redis/redis.conf &>>$LOG
+Stat $?
+Print "Start Redis Database"
+systemctl restart redis &>>$LOG  && systemctl enable redis &>>$LOG
+Stat $?
