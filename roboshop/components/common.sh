@@ -285,7 +285,7 @@ chown roboshop:roboshop -R /home/roboshop
     STAT $?
 
     echo "Setup SystemD Service\t"
-    mv /home/roboshop/${COMPONENT}/systemd.service /etc/systemd/system/${COMPONENT}.service && systemctl daemon-reload && systemctl restart ${COMPONENT} &>>$LOG && systemctl enable ${COMPONENT} &>>$LOG
+    mv /home/roboshop/${COMPONENT}/systemd.service /etc/systemd/system/${COMPONENT}.service && systemctl daemon-reload && systemctl restart ${COMPONENT} &>>$LOG && systemctl enable ${COMPONENT} &>>$LOG_FILE
     STAT $?
 
 #  echo "Fix App Permissions"
