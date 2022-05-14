@@ -281,8 +281,8 @@ APP_USER_SETUP_WITH_APP() {
 SYSTEMD_SETUP() {
 
   echo "Fix App Permissions"
-    chown -R roboshop:roboshop /home/roboshop &>>$LOG
-    Stat $?
+    chown -R roboshop:roboshop /home/roboshop &>>$LOG_FILE
+    STAT $?
  # chown -R  roboshop:roboshop /home/roboshop/ &>>$LOG_FILE
   echo "Update ${COMPONENT} SystemD file"
   sed -i -e 's/MONGO_DNSNAME/mongodb.roboshop.internal/' \
