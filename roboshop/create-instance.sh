@@ -1,31 +1,62 @@
 #!/bin/bash
 
-LID="lt-00ca4f838057de89d"
-LVER=2
-INSTANCE_NAME=$1
+#LID="lt-00ca4f838057de89d"
+#LVER=2
+#INSTANCE_NAME=$1
+#
+#if [ -z "${INSTANCE_NAME}" ]; then
+#  echo "Input is missing"
+#  exit 1
+#fi
+#
+#aws ec2 describe-instances --filters "Name=tag:Name,Values=$INSTANCE_NAME" | jq .Reservations[].Instances[].State.Name | grep running &>/dev/null
+#if [ $? -eq 0 ]; then
+#  echo "Instance $INSTANCE_NAME is already running"
+#  exit 0
+#fi
+#
+#aws ec2 describe-instances --filters "Name=tag:Name,Values=$INSTANCE_NAME" | jq .Reservations[].Instances[].State.Name | grep stopped &>/dev/null
+#if [ $? -eq 0 ]; then
+#  echo "Instance $INSTANCE_NAME is already created and stopped"
+#  exit 0
+#fi
+#
+#IP=$(aws ec2 run-instances --launch-template LaunchTemplateId=$LID,Version=$LVER --tag-specifications "ResourceType=spot-instances-request,Tags=[{Key=Name,Value=$INSTANCE_NAME}]" "ResourceType=instance,Tags=[{Key=Name,Value=$INSTANCE_NAME}]" | jq .Instances[].PrivateIpAddress | sed -e 's/"//g')
+#
+#sed -e "s/INSTANCE_NAME/$INSTANCE_NAME/" -e "s/INSTANCE_IP/$IP/" record.json >/tmp/record.json
+#aws route53 change-resource-record-sets --hosted-zone-id Z0154279NRNJNHPQSM7G --change-batch file:///tmp/record.json | jq
 
-if [ -z "${INSTANCE_NAME}" ]; then
-  echo "Input is missing"
-  exit 1
+CREATE() {
+
+COUNT=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=$1" | jq ".Reservations[].Instances[].PrivateIpAddress" | grep -v null | wc -l )
+
+if [ $COUNT -eq 0 ]; then
+aws ec2 run-instances --image-id ami-0bb6af715826253bf --instance-type t2.micro  --security-group-ids sg-063120a81cc0aff8a  --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$1}]" | jq &>/dev/null
+else
+  echo -e "\e[1;33m$1 Instance Already Exists\e[0m"
+  return
+  fi
+  sleep 2
+
+ IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=$1" | jq ".Reservations[].Instances[].PrivateIpAddress" | grep -v null  | xargs )
+
+ ## xargs is used to remove the double quotes in displaying the output
+
+ sed -e "s/DNSNAME/$1.roboshop.internal/"  -e "s/IPADDRESS/${IP}/" record.json >/tmp/record.json
+ aws route53 change-resource-record-sets --hosted-zone-id Z0154279NRNJNHPQSM7G  --change-batch  file:///tmp/record.json | jq &>/dev/null
+
+
+}
+
+if [ "$1" == "all" ]; then
+  ALL=(frontend mongodb catalogue redis user cart mysql shipping rabbitmq payment)
+  for component in ${ALL[*]}; do
+    echo "Creating Instance - $component "
+    CREATE $component
+  done
+else
+  CREATE $1
 fi
-
-aws ec2 describe-instances --filters "Name=tag:Name,Values=$INSTANCE_NAME" | jq .Reservations[].Instances[].State.Name | grep running &>/dev/null
-if [ $? -eq 0 ]; then
-  echo "Instance $INSTANCE_NAME is already running"
-  exit 0
-fi
-
-aws ec2 describe-instances --filters "Name=tag:Name,Values=$INSTANCE_NAME" | jq .Reservations[].Instances[].State.Name | grep stopped &>/dev/null
-if [ $? -eq 0 ]; then
-  echo "Instance $INSTANCE_NAME is already created and stopped"
-  exit 0
-fi
-
-IP=$(aws ec2 run-instances --launch-template LaunchTemplateId=$LID,Version=$LVER --tag-specifications "ResourceType=spot-instances-request,Tags=[{Key=Name,Value=$INSTANCE_NAME}]" "ResourceType=instance,Tags=[{Key=Name,Value=$INSTANCE_NAME}]" | jq .Instances[].PrivateIpAddress | sed -e 's/"//g')
-
-sed -e "s/INSTANCE_NAME/$INSTANCE_NAME/" -e "s/INSTANCE_IP/$IP/" record.json >/tmp/record.json
-aws route53 change-resource-record-sets --hosted-zone-id Z0154279NRNJNHPQSM7G --change-batch file:///tmp/record.json | jq
-
 #
 #if [ -z "$1" ]; then
 #  echo -e "\e[31mInput Machine Name is needed\e[0m"
