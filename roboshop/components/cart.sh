@@ -1,4 +1,6 @@
 #!/bin/bash
 
 source components/common.sh
-NODEJS cart
+COMPONENT=cart
+## Function
+NODEJS

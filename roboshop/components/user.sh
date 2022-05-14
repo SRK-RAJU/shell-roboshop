@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#source components/common.sh
+#
+#NODEJS user
 source components/common.sh
-
-NODEJS user
+COMPONENT=user
+## Function
+NODEJS

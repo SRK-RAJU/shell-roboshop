@@ -1,4 +1,7 @@
 #!/bin/bash
+#!/bin/bash
 
 source components/common.sh
-NODEJS catalogue
+COMPONENT=catalogue
+## Function
+NODEJS
