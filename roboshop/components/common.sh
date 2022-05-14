@@ -379,8 +379,8 @@ CHECK_REDIS_FROM_APP() {
  ## echo status = $STAT
   STAT=$(curl -s localhost:8080/health  | jq .redis)
   if [ "$STAT" == "true" ]; then
-    Stat 0
+    STAT 0
   else
-    Stat 1
+    STAT 1
   fi
 }
