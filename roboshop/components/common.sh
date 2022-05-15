@@ -361,8 +361,8 @@ NODEJS() {
   echo "Install NodeJS Dependencies"
 
   cd /home/roboshop/${COMPONENT} &>>$LOG_FILE
- # npm install --unsafe-perm  &>>$LOG_FILE
- npm install  &>>$LOG_FILE
+ sudo npm install --unsafe-perm  &>>$LOG_FILE
+ #npm install  &>>$LOG_FILE
   STAT $?
 
   SYSTEMD_SETUP
