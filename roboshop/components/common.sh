@@ -423,7 +423,7 @@ GOLANG() {
 
 CHECK_REDIS_FROM_APP() {
  echo "Checking DB  Connections from APP In Redis "
-  sleep 15
+  sleep 10
  ## echo status = $STAT
   STAT=$(curl -s localhost:8080/health  | jq .redis)
   if [ "$STAT" == "true" ]; then
