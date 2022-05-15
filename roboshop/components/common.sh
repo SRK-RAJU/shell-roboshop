@@ -282,16 +282,13 @@ SYSTEMD_SETUP() {
 
   echo "Fix App Permissions"
    chown roboshop:roboshop -R /home/roboshop
-    sed -i  -e 's/MONGO_DNSNAME/mongod.roboshop.internal/' \
-            -e 's/REDIS_ENDPOINT/redis.roboshop.internal/' \
-            -e 's/MONGO_ENDPOINT/mongod.roboshop.internal/' \
-            -e 's/CATALOGUE_ENDPOINT/catalogue.roboshop.internal/' \
-            -e 's/CARTENDPOINT/cart.roboshop.internal/' \
-            -e 's/DBHOST/mysql.roboshop.internal/' \
-            -e 's/CARTHOST/cart.roboshop.internal/' \
-            -e 's/USERHOST/user.roboshop.internal/' \
-            -e 's/AMQPHOST/rabbitmq.roboshop.internal/' \
-            -e 's/RABBITMQ-IP/rabbitmq.roboshop.internal/' /home/roboshop/${COMPONENT}/systemd.service &>>$LOG_FILE && mv /home/roboshop/${COMPONENT}/systemd.service /etc/systemd/system/${COMPONENT}.service  &>>$LOG_FILE
+    sed -i  -e 's/MONGO_DNSNAME/mongod.roboshop.internal/'\
+            -e 's/REDIS_ENDPOINT/redis.roboshop.internal/'\
+            -e 's/MONGO_ENDPOINT/mongod.roboshop.internal/'\
+            -e 's/CATALOGUE_ENDPOINT/catalogue.roboshop.internal/'\
+            -e 's/CARTENDPOINT/cart.roboshop.internal/'\
+            -e 's/CARTHOST/cart.roboshop.internal/'\
+             /home/roboshop/${COMPONENT}/systemd.service &>>$LOG_FILE && mv /home/roboshop/${COMPONENT}/systemd.service /etc/systemd/system/${COMPONENT}.service  &>>$LOG_FILE
     STAT $? "Update SystemD Config file"
 
     systemctl daemon-reload &>>$LOG_FILE && systemctl restart ${COMPONENT} &>>$LOG_FILE && systemctl enable ${COMPONENT} &>>$LOG_FILE
