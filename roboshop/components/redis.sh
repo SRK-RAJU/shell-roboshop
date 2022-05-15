@@ -104,9 +104,3 @@ STAT $?
 #echo "Start Redis Database"
 #systemctl restart redis &>>$LOG_FILE  && systemctl enable redis &>>$LOG_FILE
 #STAT $?
-echo "Load Schema"
-cd cart-main
-for app in server ; do
-  redis < ${app}.js &>>$LOG_FILE
-done
-STAT $?
