@@ -66,7 +66,7 @@ source components/common.sh
 
 
 echo "Installing EPEL RELEASE"
-yum install epel-release yum-utils http://rpms.remirepo.net/enterprise/remi-release-7.rpm -y &>>$LOG_FILE
+yum install yum-utils http://rpms.remirepo.net/enterprise/remi-release-7.rpm -y &>>$LOG_FILE
 #yum install epel-release yum-utils -y &>>$LOG_FILE
 #STAT $?
 
@@ -80,18 +80,22 @@ echo "Install  Redis "
 sudo yum install redis -y &>>$LOG_FILE
 STAT $?
 
-echo "Configure Redis Listen Address\t\t"
-if [ -f /etc/redis.conf ]; then
-  sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/redis.conf
-fi
-if [ -f /etc/redis/redis.conf ]; then
-  sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/redis/redis.conf
-fi
+
+echo "Update Redis Listen Address"
+sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/redis.conf /etc/redis/redis.conf &>>$LOG
 STAT $?
 
+#echo "Configure Redis Listen Address\t\t"
+#if [ -f /etc/redis.conf ]; then
+#  sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/redis.conf
+#fi
+#if [ -f /etc/redis/redis.conf ]; then
+#  sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/redis/redis.conf
+#fi
+#STAT $?
+
 echo "Start Redis Service\t\t\t"
-systemctl enable redis &>>$LOG_FILE && systemctl restart redis &>>$LOG_FILE
-systemctl restart redis &>>$LOG_FILE && systemctl enable redis &>>$LOG_FILE
+systemctl enable redis &>>$LOG_FILE && systemctl restart redis &>>$LOG_FILE && systemctl restart redis &>>$LOG_FILE && systemctl enable redis &>>$LOG_FILE
 STAT $?
 
 #echo "Update Redis Listen Address "

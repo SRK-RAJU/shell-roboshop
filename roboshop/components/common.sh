@@ -280,7 +280,7 @@ APP_USER_SETUP_WITH_APP() {
 
 SYSTEMD_SETUP() {
   echo "Fix App Permissions"
-chown roboshop:roboshop -R /home/roboshop
+chown -R  roboshop:roboshop  /home/roboshop
   sed -i -e 's/MONGO_DNSNAME/mongodb.roboshop.internal/'\
    -e 's/REDIS_ENDPOINT/redis.roboshop.internal/'\
     -e  's/MONGO_ENDPOINT/mongodb.roboshop.internal/' \
