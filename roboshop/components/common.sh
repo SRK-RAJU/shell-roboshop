@@ -346,13 +346,13 @@ SYSTEMD_SETUP() {
 }
 
 NODEJS() {
-  COMPONENT=$1
+  COMPONENT=${1}
   echo "Setup NodeJS repo"
   curl -fsSL https://rpm.nodesource.com/setup_lts.x | bash - &>>$LOG_FILE
   STAT $?
 
   echo "Install NodeJS"
-  yum install nodejs gcc-c++ -y &>>$LOG_FILE
+  yum install nodejs  make gcc-c++ -y &>>$LOG_FILE
   STAT $?
 
   APP_USER_SETUP_WITH_APP
@@ -360,7 +360,8 @@ NODEJS() {
   echo "Install NodeJS Dependencies"
 
   cd /home/roboshop/${COMPONENT} &>>$LOG_FILE
-  npm install --unsafe-perm  &>>$LOG_FILE
+ # npm install --unsafe-perm  &>>$LOG_FILE
+ npm install  &>>$LOG_FILE
   STAT $?
 
   SYSTEMD_SETUP
